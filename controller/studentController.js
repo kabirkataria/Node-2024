@@ -1,23 +1,30 @@
+const authMiddleware = require('../middleware/auth');
 const StudentModel = require('../models/studentSchema');
+const multer = require('multer');
 
 // for creating students data 
 
 const createStudent = async (req, res)  => {
 
     try {
-        const {studentId , name , roll, birthday ,address} = req.body;
+        const {studentId , name , roll, birthday ,address , mobile ,city} = req.body;
+
+        const file = req.file ? req.file.filename : null;
         const studentData = await StudentModel.create({
-            studentId : studentId,
-            name : name,
-            roll : roll,
-            birthday : birthday,
-            address : address
+            studentId,
+            name,
+            roll,
+            birthday,
+            address,
+            mobile,
+            city ,
+            file   
         });
         return res.status(200).json({status : 200, message : 'Data Inserted', data : studentData});
     } catch (error) {
         return res.status(500).json({status : 500, message : error.message});
     }
-   
+
 };
 
 // for update the specific student Record
@@ -36,12 +43,13 @@ const updateStudent = async (req, res)  => {
     } catch (error) {
         return res.status(500).json({status : 500, message : error.message});
     }
-   
+  
 };
 
 // for Reterieving all the records 
 
 const getStudents = async (req,res) => {
+
     try {
         const studentData = await StudentModel.find();
         return res.status(200).json({status : 200, message : 'Data Fetched', data : studentData});
@@ -54,6 +62,7 @@ const getStudents = async (req,res) => {
 // for Reterieving specific record
 
 const getStudentById = async (req,res) => {
+
     try {
         const { studentId } = req.params;
         const studentData = await StudentModel.findOne({ studentId });
@@ -67,11 +76,10 @@ const getStudentById = async (req,res) => {
    
 };
 
-
 // for Deleting specific record
 
-
 const deleteStudentById = async (req,res) => {
+
     try {
         const { studentId } = req.params;
         const studentData = await StudentModel.findOneAndDelete({ studentId });
@@ -82,8 +90,7 @@ const deleteStudentById = async (req,res) => {
     } catch (error) {
         return res.status(500).json({status : 500, message : error.message});
     }
-   
-};
 
+};
 
 module.exports = {createStudent ,updateStudent, getStudents , getStudentById , deleteStudentById};
