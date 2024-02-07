@@ -5,7 +5,10 @@ const studentSchema = new mongoose.Schema({
     name: String,
     roll: Number,
     birthday: Date,
-    address: String
+    address: String,
+    mobile : String,
+    city : String,
+    file : String
 });
  
 module.exports = mongoose.model(
